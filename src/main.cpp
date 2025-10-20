@@ -76,26 +76,29 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	Controller controller(pros::E_CONTROLLER_MASTER);
-	MotorGroup leftMG({16,17,18});    // Creates a motor group with forwards ports 1 & 3 and reversed port 2
-	MotorGroup rightMG({-13,-14,-15});  // Creates a motor group with forwards port 5 and reversed ports 4 & 6
-	Motor IntakeMotor(19);
+	
 
 
 	while (true) {
 
 		// Arcade control scheme
-		int dir = controller.get_analog(ANALOG_LEFT_Y);    // Gets amount forward/backward from left joystick
+		int dir = controller.get_analog(-ANALOG_LEFT_Y);    // Gets amount forward/backward from left joystick
 		int turn = controller.get_analog(ANALOG_RIGHT_X);  // Gets the turn left/right from right joystick
 		leftMG.move(dir - turn);                      // Sets left motor voltage
 		rightMG.move(dir + turn);        
 		
 		if (controller.get_digital(DIGITAL_R1)) {
-			IntakeMotor.move(127); // Run intake forward
+			Intake.move(127); // Run intake forward
 		} else if (controller.get_digital(DIGITAL_R2)) {
-			IntakeMotor.move(-127); // Run intake backward
+			Intake.move(-127); // Run intake backward
 		} else {
-			IntakeMotor.move(0); // Stop intake
+			Intake.move(0); // Stop intake
+		}
+
+		if (controller.get_digital(BUTTON_A)) {
+			IntakePiston.set_value(true); // Activate piston
+		} else if (controller.get_digital(BUTTON_B)) {
+			IntakePiston.set_value(false); // Deactivate piston
 		}
 		delay(20);                               // Run for 20 ms then update
 	}
