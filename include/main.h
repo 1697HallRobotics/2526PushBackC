@@ -14,6 +14,7 @@
 
 #ifndef _PROS_MAIN_H_
 #define _PROS_MAIN_H_
+#define PROS_USE_SIMPLE_NAMES
 
 /**
  * If defined, some commonly used enums will have preprocessor macros which give
@@ -56,8 +57,9 @@
 Controller controller(pros::E_CONTROLLER_MASTER);
 MotorGroup leftMG({-1,2,3});    // Creates a motor group with forwards ports 1 & 3 and reversed port 2
 MotorGroup rightMG({-11,-12,-13});  // Creates a motor group with forwards port 5 and reversed ports 4 & 6
-MotorGroup Intake(10,20,19);
-digital_out IntakePiston(Brain.ThreeWirePort.H);
+MotorGroup Intake({10,20,19});
+adi::Pneumatics IntakePiston('b', false);
+adi::Pneumatics OuttakePiston('a', false);
 
 /**
  * Prototypes for the competition control tasks are redefined here to ensure
